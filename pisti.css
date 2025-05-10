@@ -1,0 +1,61 @@
+/* General layout */
+
+body {
+  background-color: #35654d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Playing Field */
+.discard-pile {
+  display: flex;
+  flex-direction: row;
+  padding: 0 10px;
+  position: relative;
+}
+
+.player-hand {
+  display: flex;
+  flex-direction: row;
+  padding: 0 10px;
+  position: relative;
+}
+
+
+.column {
+  padding: 10px;
+}
+
+/* Standard playing card 63 x 88 mm */
+.card {
+  border-radius: 10%;
+  border: 3px solid black;
+  width: 126px;
+  height: 196px;
+  margin: 10px 0;
+  line-height: 196px;
+  text-align: center;
+  font-size: 40px;
+  font-family: serif;
+}
+
+.red-suit{
+  color: red;
+}
+
+.empty {
+  background-color: white;
+}
+
+.column:hover .empty {
+  background-color: lightgray;
+}
+
+.column:hover .empty ~ .empty {
+  background-color: white;
+}
+
