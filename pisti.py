@@ -13,11 +13,20 @@ handSize = 4
 class Pisti:
 
     def __init__(self):
+        # Game Variables
         self.moves = []
-        self.winner = None
+        self.winner = False
         self.deck = []
+        self.discard = []
+        self.pistiCount = [0, 0] # Player 1, Player 2
+        self.playerCards = [[],[]] # Player 1, Player 2
+
+        # Player Variables
         self.player1Hand = []
+        self.isPlayer1HandEmpty = False
+
         self.player2Hand = []
+        self.isPlayer2HandEmpty = False
 
     def last_player(self):
         # Last player who placed a card
@@ -38,12 +47,41 @@ class Pisti:
 
     def dealCards(self):
         if (len(self.deck) > playerCount * handSize):
+            # Reset Hand
+            self.player1Hand = []
+            self.player2Hand = []
+
+            # Fill Hand with New Cards from Deck
             for i in range(handSize):
                 self.player1Hand.append(self.deck.pop(0))
                 self.player2Hand.append(self.deck.pop(0))
+
+            # Reset Flags
+            self.isPlayer1HandEmpty = False
+            self.isPlayer2HandEmpty = True # CHANGE FOR TESTING
             print(self.player1Hand)
             print(self.player2Hand)
             print(len(self.deck))
 
     def play(self, player, card):
-        return True
+        # Play Card
+        self.discard.append(card)
+
+        # Check for Match
+        if (len(self.discard) > 2):
+            if (self.discard[-1][0] == self.discard[-2][0]):
+                if (len(self.discard) == 2):
+                    print("Pisti!")
+                    self.pistiCount[0] += 1 #CHANGE FOR TESTING
+                    self.playerCards[0].append(self.discard)
+                    self.discard = []
+
+                else:
+                    print("Match")
+                    self.playerCards[0].append(self.discard)
+                    self.discard = []
+
+        print(self.playerCards)
+        print(self.discard)
+            
+        

@@ -1,5 +1,5 @@
+// Global Variables
 const PLAYER1 = "red";
-
 const PLAYER2 = "blue";
 
 function createDiscard(discardPile){
@@ -52,16 +52,49 @@ function dealCards(player, card) {
   card1.innerText = styleCard(card1, card[1]);
   card2.innerText = styleCard(card2, card[2]);
   card3.innerText = styleCard(card3, card[3]);
-  
+
 }
 
-function playMove(discardPile, player, card) {
+function playMove(player, card, column) {
   // Check values of arguments.
   if (player !== PLAYER1 && player !== PLAYER2) {
     throw new Error(`player must be ${PLAYER1} or ${PLAYER2}.`);
   }
-  let topCard = document.getElementById("topCard");
-  topCard.innerText = styleCard(topCard, card);
+  if (card !== ""){
+    // Update Top Card UI
+    let topCard = document.getElementById("topCard");
+    topCard.innerText = styleCard(topCard, card);
+    topCard.style.backgroundColor = "white";
+
+    // Update Log
+    let cardLog = document.getElementById("log");
+    cardLog.innerText += " " + card + " -";
+
+    // Remove Card from Player Hand UI
+    removeFromHand(player, column);
+  }
+}
+
+function removeFromHand(player, column){
+  switch (column){
+    case 0:
+      card0.innerText = "";
+      card0.style.backgroundColor = "#35654d";
+      break;
+    case 1:
+      card1.innerText = "";
+      card1.style.backgroundColor = "#35654d";
+      break;
+    case 2:
+      card2.innerText = "";
+      card2.style.backgroundColor = "#35654d";
+      break;
+    case 3:
+      card3.innerText = "";
+      card3.style.backgroundColor = "#35654d";
+      break;
+  }
+  
 }
 
 // Returns stylized text based on the Suit

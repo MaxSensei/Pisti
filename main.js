@@ -4,6 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Initialize the UI.
     const discardPile = document.querySelector(".discard-pile");
     const playerHand = document.querySelector(".player-hand");
+
     createDiscard(discardPile);
     createHand(playerHand);
     // Open the WebSocket connection and register event handlers.
@@ -38,7 +39,9 @@ function sendMoves(playerHand, websocket) {
       switch (event.type) {
         case "play":
           // Update the UI with the move.
-          playMove(discardPile, event.player, event.card);
+          console.log(event);
+          playMove(event.player, event.card, event.column);
+          console.log(event.card);
           break;
         case "deal":
           // Deal cards

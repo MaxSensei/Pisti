@@ -15,22 +15,8 @@ async def handler(websocket):
 
     game.shuffleDeck()
     game.dealCards()
-    print(game.player1Hand)
 
-    for player, card in [
-        (PLAYER1, "3H"),
-        (PLAYER2, "KS"),
-        (PLAYER1, "AD"),
-        (PLAYER2, "7C"),
-    ]:
-        event = {
-            "type": "play",
-            "player": player,
-            "card": card,
-        }
-        await websocket.send(json.dumps(event))
-        await asyncio.sleep(0.5)
-
+    # Update UI for Players Hand
     event = {
             "type": "deal",
             "player": PLAYER1,
@@ -38,15 +24,41 @@ async def handler(websocket):
         }
     await websocket.send(json.dumps(event))
     await asyncio.sleep(0.5)
+    
+    # Send Move
+    async for message in websocket:
+        # Parse a "play" event from the UI.
+        print(message)
+        event = json.loads(message)
+        assert event["type"] == "play"
+        column = event["column"]
 
-    #for card in game.player1Hand:
-    #    event = {
-    #        "type": "deal",
-    #        "player": PLAYER1,
-    #        "card": card,
-    #    }
-    #    await websocket.send(json.dumps(event))
-    #    await asyncio.sleep(0.5)
+        card = game.player1Hand[column]
+
+        # Check if card has already been played
+        if (card != ""):
+            # Update Game Mode
+            game.play(PLAYER1, card)
+            
+            # Send a "play" event to update the UI.
+            event = {
+                "type": "play",
+                "player": PLAYER1,
+                "card": card,
+                "column": column,
+            }
+            await websocket.send(json.dumps(event))
+
+            # Remove card from hand
+            game.player1Hand[column] = ""
+            if(game.player1Hand.count("") == 4):
+                game.isPlayer1HandEmpty = True
+            print(game.player1Hand)
+            
+        
+        # Deal Cards When Both Players Hands are Empty and Deck Remains
+        if (len(game.deck) > 0 and game.isPlayer1HandEmpty and game.isPlayer2HandEmpty):
+            game.dealCards()
 
 
 async def main():
