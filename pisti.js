@@ -1,6 +1,6 @@
 // Global Variables
-const PLAYER1 = "red";
-const PLAYER2 = "blue";
+const PLAYER1 = "Player1";
+const PLAYER2 = "Player2";
 
 function createDiscard(discardPile){
   // Inject stylesheet.

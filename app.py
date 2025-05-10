@@ -2,7 +2,7 @@ import asyncio
 import json
 
 from websockets.asyncio.server import serve
-from pisti import PLAYER1, PLAYER2, Pisti
+from pisti import PLAYER1, PLAYER2, Pisti, playerData
 
 
 #async def handler(websocket):
@@ -20,7 +20,7 @@ async def handler(websocket):
     event = {
             "type": "deal",
             "player": PLAYER1,
-            "card": game.player1Hand,
+            "card": playerData["Player1"]["hand"],
         }
     await websocket.send(json.dumps(event))
     await asyncio.sleep(0.5)
@@ -33,13 +33,13 @@ async def handler(websocket):
         assert event["type"] == "play"
         column = event["column"]
 
-        card = game.player1Hand[column]
+        card = playerData["Player1"]["hand"][column]
 
         # Check if card has already been played
         if (card != ""):
             # Update Game Mode
             game.play(PLAYER1, card)
-            
+
             # Send a "play" event to update the UI.
             event = {
                 "type": "play",
@@ -50,14 +50,14 @@ async def handler(websocket):
             await websocket.send(json.dumps(event))
 
             # Remove card from hand
-            game.player1Hand[column] = ""
-            if(game.player1Hand.count("") == 4):
-                game.isPlayer1HandEmpty = True
-            print(game.player1Hand)
+            playerData["Player1"]["hand"][column] = ""
+            if(playerData["Player1"]["hand"].count("") == 4):
+                playerData["Player1"]["isHandEmpty"] = True
+            print(playerData["Player1"]["hand"])
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
-        if (len(game.deck) > 0 and game.isPlayer1HandEmpty and game.isPlayer2HandEmpty):
+        if (len(game.deck) > 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             game.dealCards()
 
 

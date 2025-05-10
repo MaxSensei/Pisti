@@ -3,10 +3,15 @@ import random
 
 __all__ = ["PLAYER1", "PLAYER2", "Pisti"]
 
-PLAYER1, PLAYER2 = "red", "blue"
+PLAYER1, PLAYER2 = "Player1", "Player2"
 
 playerCount = 2
 handSize = 4
+
+playerData = {
+    "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 12},
+    "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 45},
+}
 
 
 
@@ -18,15 +23,6 @@ class Pisti:
         self.winner = False
         self.deck = []
         self.discard = []
-        self.pistiCount = [0, 0] # Player 1, Player 2
-        self.playerCards = [[],[]] # Player 1, Player 2
-
-        # Player Variables
-        self.player1Hand = []
-        self.isPlayer1HandEmpty = False
-
-        self.player2Hand = []
-        self.isPlayer2HandEmpty = False
 
     def last_player(self):
         # Last player who placed a card
@@ -43,45 +39,51 @@ class Pisti:
                 ]
         random.shuffle(self.deck)
         print(self.deck)
-        print(len(self.deck))
 
     def dealCards(self):
         if (len(self.deck) > playerCount * handSize):
-            # Reset Hand
-            self.player1Hand = []
-            self.player2Hand = []
+            # Reset Hands
+            for player in playerData:
+                playerData[player]["hand"] = []
 
             # Fill Hand with New Cards from Deck
             for i in range(handSize):
-                self.player1Hand.append(self.deck.pop(0))
-                self.player2Hand.append(self.deck.pop(0))
+                for player in playerData:
+                    playerData[player]["hand"].append(self.deck.pop(0))
 
             # Reset Flags
-            self.isPlayer1HandEmpty = False
-            self.isPlayer2HandEmpty = True # CHANGE FOR TESTING
-            print(self.player1Hand)
-            print(self.player2Hand)
-            print(len(self.deck))
+            for player in playerData:
+                playerData[player]["isHandEmpty"] = False
+            playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
+            
+            for player in playerData:
+                print(player + str(playerData[player]["hand"]))
+            print("Deck Count: " + str(len(self.deck)))
 
     def play(self, player, card):
         # Play Card
         self.discard.append(card)
 
-        # Check for Match
-        if (len(self.discard) > 2):
+        # Check for Match or Jack
+        if (len(self.discard) >= 2):
             if (self.discard[-1][0] == self.discard[-2][0]):
-                if (len(self.discard) == 2):
-                    print("Pisti!")
-                    self.pistiCount[0] += 1 #CHANGE FOR TESTING
-                    self.playerCards[0].append(self.discard)
+                if (len(self.discard) == 2 and self.discard[-1][0] == "J"):
+                    print("Double Pisti!")
+                    playerData[player]["pistiCount"] += 2
+                    playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-
+                elif (len(self.discard) == 2):
+                    print("Pisti!")
+                    playerData[player]["pistiCount"] += 1
+                    playerData[player]["cards"].extend(self.discard)
+                    self.discard = []
                 else:
                     print("Match")
-                    self.playerCards[0].append(self.discard)
+                    playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-
-        print(self.playerCards)
-        print(self.discard)
+            elif (self.discard[-1][0] == "J"):
+                print("Jack")
+                playerData[player]["cards"].extend(self.discard)
+                self.discard = []
             
         
