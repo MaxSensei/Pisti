@@ -2,25 +2,31 @@
 const PLAYER1 = "Player1";
 const PLAYER2 = "Player2";
 
+const cardLog = document.getElementById("log");
+let topCard = null;
+let card0 = null;
+let card1 = null;
+let card2 = null;
+let card3 = null;
+
+const tableColor = "#35654d";
+
+// Inject stylesheet.
+const linkElement = document.createElement("link");
+linkElement.href = import.meta.url.replace(".js", ".css");
+linkElement.rel = "stylesheet";
+document.head.append(linkElement);
+
 function createDiscard(discardPile){
-  // Inject stylesheet.
-  const linkElement = document.createElement("link");
-  linkElement.href = import.meta.url.replace(".js", ".css");
-  linkElement.rel = "stylesheet";
-  document.head.append(linkElement);
   // Generate discard pile.
   const discardPileElement = document.createElement("div");
   discardPileElement.className = "card";
   discardPileElement.id = "topCard"
   discardPile.append(discardPileElement);
+  topCard = document.getElementById("topCard");
 }
 
 function createHand(playerHand) {
-  // Inject stylesheet.
-  const linkElement = document.createElement("link");
-  linkElement.href = import.meta.url.replace(".js", ".css");
-  linkElement.rel = "stylesheet";
-  document.head.append(linkElement);
   // Generate playerHand.
   for (let column = 0; column < 4; column++) {
     const columnElement = document.createElement("div");
@@ -34,6 +40,10 @@ function createHand(playerHand) {
       columnElement.append(cellElement);
     }
     playerHand.append(columnElement);
+    card0 = document.getElementById("card0");
+    card1 = document.getElementById("card1");
+    card2 = document.getElementById("card2");
+    card3 = document.getElementById("card3");
   }
 }
 
@@ -42,17 +52,15 @@ function dealCards(player, card) {
   if (player !== PLAYER1 && player !== PLAYER2) {
     throw new Error(`player must be ${PLAYER1} or ${PLAYER2}.`);
   }
-
-  let card0 = document.getElementById("card0");
-  let card1 = document.getElementById("card1");
-  let card2 = document.getElementById("card2");
-  let card3 = document.getElementById("card3");
-
   card0.innerText = styleCard(card0, card[0]);
   card1.innerText = styleCard(card1, card[1]);
   card2.innerText = styleCard(card2, card[2]);
   card3.innerText = styleCard(card3, card[3]);
 
+  card0.style.backgroundColor = "white";
+  card1.style.backgroundColor = "white";
+  card2.style.backgroundColor = "white";
+  card3.style.backgroundColor = "white";
 }
 
 function playMove(player, card, column) {
@@ -60,38 +68,40 @@ function playMove(player, card, column) {
   if (player !== PLAYER1 && player !== PLAYER2) {
     throw new Error(`player must be ${PLAYER1} or ${PLAYER2}.`);
   }
-  if (card !== ""){
-    // Update Top Card UI
-    let topCard = document.getElementById("topCard");
-    topCard.innerText = styleCard(topCard, card);
-    topCard.style.backgroundColor = "white";
+  // Update Top Card UI
+  topCard.innerText = styleCard(topCard, card);
+  topCard.style.backgroundColor = "white";
 
-    // Update Log
-    let cardLog = document.getElementById("log");
-    cardLog.innerText += " " + card + " -";
+  // Update Log
+  cardLog.innerText += " " + card + " -";
 
-    // Remove Card from Player Hand UI
-    removeFromHand(player, column);
-  }
+  // Remove Card from Player Hand UI
+  removeFromHand(player, column);
+}
+
+function match(){
+  cardLog.innerText = "";
+  topCard.innerText = "";
+  topCard.style.backgroundColor = tableColor;
 }
 
 function removeFromHand(player, column){
   switch (column){
     case 0:
       card0.innerText = "";
-      card0.style.backgroundColor = "#35654d";
+      card0.style.backgroundColor = tableColor;
       break;
     case 1:
       card1.innerText = "";
-      card1.style.backgroundColor = "#35654d";
+      card1.style.backgroundColor = tableColor;
       break;
     case 2:
       card2.innerText = "";
-      card2.style.backgroundColor = "#35654d";
+      card2.style.backgroundColor = tableColor;
       break;
     case 3:
       card3.innerText = "";
-      card3.style.backgroundColor = "#35654d";
+      card3.style.backgroundColor = tableColor;
       break;
   }
   
@@ -130,4 +140,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards };
+export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match };

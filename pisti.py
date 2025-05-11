@@ -23,6 +23,7 @@ class Pisti:
         self.winner = False
         self.deck = []
         self.discard = []
+        self.isMatch = False
 
     def last_player(self):
         # Last player who placed a card
@@ -60,6 +61,7 @@ class Pisti:
                 print(player + str(playerData[player]["hand"]))
             print("Deck Count: " + str(len(self.deck)))
 
+
     def play(self, player, card):
         # Play Card
         self.discard.append(card)
@@ -72,18 +74,24 @@ class Pisti:
                     playerData[player]["pistiCount"] += 2
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
+                    self.isMatch = True
                 elif (len(self.discard) == 2):
                     print("Pisti!")
                     playerData[player]["pistiCount"] += 1
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
+                    self.isMatch = True
                 else:
                     print("Match")
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
+                    self.isMatch = True
             elif (self.discard[-1][0] == "J"):
                 print("Jack")
                 playerData[player]["cards"].extend(self.discard)
                 self.discard = []
+                self.isMatch = True
+        else:
+            self.isMatch = False
             
         

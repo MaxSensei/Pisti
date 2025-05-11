@@ -39,7 +39,7 @@ async def handler(websocket):
         if (card != ""):
             # Update Game Mode
             game.play(PLAYER1, card)
-
+            
             # Send a "play" event to update the UI.
             event = {
                 "type": "play",
@@ -48,17 +48,36 @@ async def handler(websocket):
                 "column": column,
             }
             await websocket.send(json.dumps(event))
+            await asyncio.sleep(0.5)
 
             # Remove card from hand
             playerData["Player1"]["hand"][column] = ""
             if(playerData["Player1"]["hand"].count("") == 4):
                 playerData["Player1"]["isHandEmpty"] = True
             print(playerData["Player1"]["hand"])
+
+            if (game.isMatch):
+                # Update UI when a "Match" Occurs
+                event = {
+                    "type": "match",
+                    "player": PLAYER1,
+                }
+                await websocket.send(json.dumps(event))
+                await asyncio.sleep(0.5)
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
         if (len(game.deck) > 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             game.dealCards()
+
+            # Update UI for Players Hand
+            event = {
+                    "type": "deal",
+                    "player": PLAYER1,
+                    "card": playerData["Player1"]["hand"],
+                }
+            await websocket.send(json.dumps(event))
+            await asyncio.sleep(0.5)
 
 
 async def main():

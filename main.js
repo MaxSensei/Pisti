@@ -1,4 +1,4 @@
-import { createHand, createDiscard, playMove, dealCards } from "./pisti.js";
+import { createHand, createDiscard, playMove, dealCards, match } from "./pisti.js";
 
 window.addEventListener("DOMContentLoaded", () => {
     // Initialize the UI.
@@ -47,6 +47,10 @@ function sendMoves(playerHand, websocket) {
           // Deal cards
           dealCards(event.player, event.card);
           break;  
+        case "match":
+          // Update UI after Match
+          match();
+          break;
         case "win":
           showMessage(`Player ${event.player} wins!`);
           // No further messages are expected; close the WebSocket connection.
