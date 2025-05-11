@@ -11,6 +11,9 @@ let card3 = null;
 
 const tableColor = "#35654d";
 
+const player1Score = document.getElementById("Player1-score");
+const player2Score = document.getElementById("Player2-score");
+
 // Inject stylesheet.
 const linkElement = document.createElement("link");
 linkElement.href = import.meta.url.replace(".js", ".css");
@@ -106,6 +109,17 @@ function removeFromHand(player, column){
   
 }
 
+function updateScore(scores){
+  // Update Score
+  console.log(scores)
+  player1Score.innerText = "Player 1: " + scores[0];
+  player2Score.innerText = "Player 2: " + scores[1];
+  // Reset Discard Pile and Log
+  cardLog.innerText = "";
+  topCard.innerText = "";
+  topCard.style.backgroundColor = tableColor;
+}
+
 // Returns stylized text based on the Suit
 // C: Clubs, D: Diamonds, H: Hearts, S: Spades
 function styleCard(cardElement, cardValue){
@@ -147,4 +161,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match };
+export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore };

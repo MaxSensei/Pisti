@@ -9,7 +9,7 @@ from pisti import PLAYER1, PLAYER2, Pisti, playerData
 async def handler(websocket):
     # Initialize the game
     game = Pisti()
-
+    
     game.shuffleDeck()
     game.initDiscard()
 
@@ -23,7 +23,7 @@ async def handler(websocket):
             "column": NULL,
         }
     await websocket.send(json.dumps(event))
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.25)
 
     game.dealCards()
 
@@ -34,7 +34,7 @@ async def handler(websocket):
             "card": playerData["Player1"]["hand"],
         }
     await websocket.send(json.dumps(event))
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.25)
     
     # Send Move
     async for message in websocket:
@@ -59,7 +59,7 @@ async def handler(websocket):
                 "column": column,
             }
             await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.25)
 
             # Remove card from hand
             playerData["Player1"]["hand"][column] = ""
@@ -74,7 +74,7 @@ async def handler(websocket):
                     "player": PLAYER1,
                 }
                 await websocket.send(json.dumps(event))
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.25)
 
             ################################
             # AUTOMATIC PLAYER 2 FOR TESTING
@@ -87,7 +87,7 @@ async def handler(websocket):
                 "card": playerData[PLAYER2]["hand"][tempCard],
             }
             await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.25)
 
             # Remove card from hand
             playerData[PLAYER2]["hand"][tempCard] = ""
@@ -110,7 +110,7 @@ async def handler(websocket):
                     "player": PLAYER2,
                 }
                 await websocket.send(json.dumps(event))
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.25)
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
@@ -124,10 +124,55 @@ async def handler(websocket):
                     "card": playerData["Player1"]["hand"],
                 }
             await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.25)
         elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             print("Shuffle and Update Score")
             game.updateScore()
+
+            # Update Score UI
+            event = {
+                    "type": "score",
+                    "scores": [playerData[PLAYER1]["score"], playerData[PLAYER2]["score"]],
+                }
+            await websocket.send(json.dumps(event))
+            await asyncio.sleep(0.25)
+
+            # Update Winner UI
+            if (game.winner):
+                event = {
+                    "type": "win",
+                    "player": game.winner,
+                }
+                await websocket.send(json.dumps(event))
+                await asyncio.sleep(0.25)
+            else:
+                # Start New Round
+                game.shuffleDeck()
+                game.initDiscard()
+
+                tempCard = 0
+
+                # Update UI for Initial 4 Discard Cards
+                event = {
+                        "type": "initDisc",
+                        "player": "GAME",
+                        "card": game.discard,
+                        "column": NULL,
+                    }
+                await websocket.send(json.dumps(event))
+                await asyncio.sleep(0.25)
+
+                game.dealCards()
+
+                # Update UI for Players Hand
+                event = {
+                        "type": "deal",
+                        "player": PLAYER1,
+                        "card": playerData["Player1"]["hand"],
+                    }
+                await websocket.send(json.dumps(event))
+                await asyncio.sleep(0.25)
+    
 
 
 async def main():
