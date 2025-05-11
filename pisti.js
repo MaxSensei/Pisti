@@ -74,7 +74,7 @@ function playMove(player, card, column) {
   topCard.style.backgroundColor = "white";
 
   // Update Log
-  cardLog.innerText += " " + card + " -";
+  cardLog.innerText += " " + styleCard(cardLog, card) + " -";
 }
 
 function match(){
@@ -117,19 +117,27 @@ function styleCard(cardElement, cardValue){
   
   switch (cardValue[1]){
     case "C":
-      cardElement.style.color = "black";
+      if(cardElement !== cardLog){
+        cardElement.style.color = "black";
+      }
       stylizedValue += "♣"
       return stylizedValue;
     case "D":
-      cardElement.style.color = "red";
+      if(cardElement !== cardLog){
+        cardElement.style.color = "red";
+      }
       stylizedValue += "♦"
       return stylizedValue;
     case "H":
-      cardElement.style.color = "red";
+      if(cardElement !== cardLog){
+        cardElement.style.color = "red";
+      }
       stylizedValue += "♥"
       return stylizedValue;
     case "S":
-      cardElement.style.color = "black";
+      if(cardElement !== cardLog){
+        cardElement.style.color = "black";
+      }
       stylizedValue += "♠"
       return stylizedValue;
     default:

@@ -91,6 +91,9 @@ async def handler(websocket):
                 }
             await websocket.send(json.dumps(event))
             await asyncio.sleep(0.5)
+        elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
+            print("Shuffle and Update Score")
+            game.updateScore()
 
 
 async def main():
