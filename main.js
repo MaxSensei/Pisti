@@ -45,7 +45,7 @@ function sendMoves(playerHand, websocket) {
           break;
         case "deal":
           // Deal cards
-          dealCards(event.player, event.card);
+          dealCards(event.player, event.card, event.turn);
           break;  
         case "initDisc":
           // Init Discard Pile

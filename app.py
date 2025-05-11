@@ -32,6 +32,7 @@ async def handler(websocket):
             "type": "deal",
             "player": PLAYER1,
             "card": playerData["Player1"]["hand"],
+            "turn": len(game.deck)/8,
         }
     await websocket.send(json.dumps(event))
     await asyncio.sleep(0.25)
@@ -122,6 +123,7 @@ async def handler(websocket):
                     "type": "deal",
                     "player": PLAYER1,
                     "card": playerData["Player1"]["hand"],
+                    "turn": len(game.deck)/8,
                 }
             await websocket.send(json.dumps(event))
             await asyncio.sleep(0.25)
@@ -169,6 +171,7 @@ async def handler(websocket):
                         "type": "deal",
                         "player": PLAYER1,
                         "card": playerData["Player1"]["hand"],
+                        "turn": len(game.deck)/8,
                     }
                 await websocket.send(json.dumps(event))
                 await asyncio.sleep(0.25)

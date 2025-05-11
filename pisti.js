@@ -13,6 +13,7 @@ const tableColor = "#35654d";
 
 const player1Score = document.getElementById("Player1-score");
 const player2Score = document.getElementById("Player2-score");
+const turnTracker = document.getElementById("turns");
 
 // Inject stylesheet.
 const linkElement = document.createElement("link");
@@ -50,7 +51,7 @@ function createHand(playerHand) {
   }
 }
 
-function dealCards(player, card) {
+function dealCards(player, card, turn) {
   // Shows player hand in UI
   if (player !== PLAYER1 && player !== PLAYER2) {
     throw new Error(`player must be ${PLAYER1} or ${PLAYER2}.`);
@@ -64,6 +65,8 @@ function dealCards(player, card) {
   card1.style.backgroundColor = "white";
   card2.style.backgroundColor = "white";
   card3.style.backgroundColor = "white";
+
+  turnTracker.innerText = "Turns: " + turn;
 }
 
 function playMove(player, card, column) {
