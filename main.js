@@ -47,6 +47,12 @@ function sendMoves(playerHand, websocket) {
           // Deal cards
           dealCards(event.player, event.card);
           break;  
+        case "initDisc":
+          // Init Discard Pile
+          for (let i = 0; i < 4; i++) { 
+            playMove(event.player, event.card[i], event.column);
+          }
+          break;
         case "match":
           // Update UI after Match
           match();

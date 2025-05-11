@@ -1,4 +1,5 @@
 import asyncio
+from asyncio.windows_events import NULL
 import json
 
 from websockets.asyncio.server import serve
@@ -14,6 +15,18 @@ async def handler(websocket):
     game = Pisti()
 
     game.shuffleDeck()
+    game.initDiscard()
+
+    # Update UI for Initial 4 Discard Cards
+    event = {
+            "type": "initDisc",
+            "player": "GAME",
+            "card": game.discard,
+            "column": NULL,
+        }
+    await websocket.send(json.dumps(event))
+    await asyncio.sleep(0.5)
+
     game.dealCards()
 
     # Update UI for Players Hand

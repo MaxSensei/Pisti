@@ -65,8 +65,9 @@ function dealCards(player, card) {
 
 function playMove(player, card, column) {
   // Check values of arguments.
-  if (player !== PLAYER1 && player !== PLAYER2) {
-    throw new Error(`player must be ${PLAYER1} or ${PLAYER2}.`);
+  if (player == PLAYER1 || player == PLAYER2) {
+    // Remove Card from Player Hand UI
+    removeFromHand(player, column);
   }
   // Update Top Card UI
   topCard.innerText = styleCard(topCard, card);
@@ -74,9 +75,6 @@ function playMove(player, card, column) {
 
   // Update Log
   cardLog.innerText += " " + card + " -";
-
-  // Remove Card from Player Hand UI
-  removeFromHand(player, column);
 }
 
 function match(){

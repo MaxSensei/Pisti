@@ -38,8 +38,18 @@ class Pisti:
                 "AH","2H","3H","4H","5H","6H","7H","8H","9H","0H","JH","QH","KH",
                 "AS","2S","3S","4S","5S","6S","7S","8S","9S","0S","JS","QS","KS",
                 ]
-        random.shuffle(self.deck)
+        while True:
+            random.shuffle(self.deck)
+            # Make sure top card is not Jack
+            if(self.deck[3][0] != "J"):
+                break
+
         print(self.deck)
+
+    def initDiscard(self):
+        # Starts the game by placing 4 cards on top of the discard
+        for i in range(handSize):
+            self.discard.append(self.deck.pop(0))
 
     def dealCards(self):
         if (len(self.deck) > playerCount * handSize):
