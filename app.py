@@ -6,16 +6,14 @@ from websockets.asyncio.server import serve
 from pisti import PLAYER1, PLAYER2, Pisti, playerData
 
 
-#async def handler(websocket):
-#    async for message in websocket:
-#        print(message)
-
 async def handler(websocket):
     # Initialize the game
     game = Pisti()
 
     game.shuffleDeck()
     game.initDiscard()
+
+    tempCard = 0
 
     # Update UI for Initial 4 Discard Cards
     event = {
@@ -74,6 +72,42 @@ async def handler(websocket):
                 event = {
                     "type": "match",
                     "player": PLAYER1,
+                }
+                await websocket.send(json.dumps(event))
+                await asyncio.sleep(0.5)
+
+            ################################
+            # AUTOMATIC PLAYER 2 FOR TESTING
+            # Update Game Mode
+            game.play(PLAYER2, playerData[PLAYER2]["hand"][tempCard])
+
+            event = {
+                "type": "play",
+                "player": PLAYER2,
+                "card": playerData[PLAYER2]["hand"][tempCard],
+            }
+            await websocket.send(json.dumps(event))
+            await asyncio.sleep(0.5)
+
+            # Remove card from hand
+            playerData[PLAYER2]["hand"][tempCard] = ""
+            if(playerData[PLAYER2]["hand"].count("") == 4):
+                playerData[PLAYER2]["isHandEmpty"] = True
+            print(playerData[PLAYER2]["hand"])
+
+            tempCard += 1
+            if (tempCard >3):
+                tempCard = 0
+
+            ################################
+
+            
+
+            if (game.isMatch):
+                # Update UI when a "Match" Occurs
+                event = {
+                    "type": "match",
+                    "player": PLAYER2,
                 }
                 await websocket.send(json.dumps(event))
                 await asyncio.sleep(0.5)

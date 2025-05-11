@@ -46,8 +46,6 @@ class Pisti:
             if(self.deck[3][0] != "J"):
                 break
 
-        print(self.deck)
-
     def initDiscard(self):
         # Starts the game by placing 4 cards on top of the discard
         for i in range(handSize):
@@ -67,7 +65,7 @@ class Pisti:
             # Reset Flags
             for player in playerData:
                 playerData[player]["isHandEmpty"] = False
-            playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
+            #playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
             
             for player in playerData:
                 print(player + str(playerData[player]["hand"]))

@@ -59,3 +59,16 @@ body {
   background-color: white;
 }
 
+/* Score Board */
+.score-board {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, .25);
+  border-radius: 10%;
+  width: 160px;
+  height: 100px;
+  text-align: center;
+}
+
+

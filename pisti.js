@@ -65,7 +65,8 @@ function dealCards(player, card) {
 
 function playMove(player, card, column) {
   // Check values of arguments.
-  if (player == PLAYER1 || player == PLAYER2) {
+  //if (player == PLAYER1 || player == PLAYER2)
+  if (player == PLAYER1) {
     // Remove Card from Player Hand UI
     removeFromHand(player, column);
   }
