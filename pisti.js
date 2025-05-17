@@ -1,6 +1,8 @@
 // Global Variables
 const PLAYER1 = "Player1";
 const PLAYER2 = "Player2";
+// Keep track of which browser the player is
+let playerUI = "";
 
 const cardLog = document.getElementById("log");
 let topCard = null;
@@ -121,6 +123,12 @@ function updateScore(scores){
   cardLog.innerText = "";
   topCard.innerText = "";
   topCard.style.backgroundColor = tableColor;
+  // Async Screens
+  //if (playerUI === PLAYER1){
+  //  player1Score.innerText = "IM ONE";
+  //} else if (playerUI === PLAYER2){
+  //  player2Score.innerText = "IM TWO";
+  //}
 }
 
 // Returns stylized text based on the Suit
@@ -164,4 +172,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore };
+export { PLAYER1, PLAYER2, playerUI, createHand, createDiscard, playMove, dealCards, match, updateScore };

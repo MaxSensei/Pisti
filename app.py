@@ -1,14 +1,95 @@
 import asyncio
 from asyncio.windows_events import NULL
 import json
+import secrets
 
 from websockets.asyncio.server import serve
 from pisti import PLAYER1, PLAYER2, Pisti, playerData
 
+JOIN = {}
+
+# Send Error Message
+async def error(websocket, message):
+    event = {
+        "type": "error",
+        "message": message,
+    }
+    await websocket.send(json.dumps(event))
+
+# Handles the connection for Player 1
+async def start(websocket):
+    # Initialize the game
+    game = Pisti()
+    connected = {websocket}
+
+    # Generate Player 2 Access Token
+    join_key = secrets.token_urlsafe(12)
+    JOIN[join_key] = game, connected
+
+    try:
+        # Send the secret access token to the browser of the first player,
+        # where it'll be used for building a "join" link.
+        event = {
+            "type": "init",
+            "join": join_key,
+        }
+        await websocket.send(json.dumps(event))
+
+        # Temporary - for testing.
+        print("first player started game", id(game))
+        async for message in websocket:
+            print("first player sent", message)
+            
+
+    finally:
+        del JOIN[join_key]
+
+# Handles the connection for Player 2
+async def join(websocket, join_key):
+    # Joins existing game.
+    try:
+        game, connected = JOIN[join_key]
+    except KeyError:
+        await error(websocket, "Game not found.")
+        return
+
+    # Add websocket connection to receive moves
+    connected.add(websocket)
+
+    # Play moves received from Player 2
+    try:
+        print("second player joined game", id(game))
+        async for message in websocket:
+            print("second player sent", message)
+
+    finally:
+        connected.remove(websocket)
+
+# Checks which player is connecting
+async def handler(websocket):
+    message = await websocket.recv()
+    event = json.loads(message)
+    assert event["type"] == "init"
+
+    if "join" in event:
+        # Player 2 joins an existing game.
+        await join(websocket, event["join"])
+    else:
+        # Player 1 starts a new game.
+        await start(websocket)
+
+    '''
 
 async def handler(websocket):
     # Initialize the game
-    game = Pisti()
+    #game = Pisti()
+    # Receive and parse the "init" event from the UI.
+    message = await websocket.recv()
+    event = json.loads(message)
+    assert event["type"] == "init"
+
+    # First player starts a new game.
+    await start(websocket)
     
     game.shuffleDeck()
     game.initDiscard()
@@ -176,10 +257,10 @@ async def handler(websocket):
                 await websocket.send(json.dumps(event))
                 await asyncio.sleep(0.25)
     
-
+'''
 
 async def main():
-    async with serve(handler, "", 8001) as server:
+    async with serve(handler, "0.0.0.0", 8001) as server:
         await server.serve_forever()
 
 
