@@ -36,6 +36,7 @@ async def start(websocket):
         await websocket.send(json.dumps(event))
 
         print("first player started game", id(game))
+        # Receive and process moves from Player 1
         await play(websocket, game, PLAYER1, connected)
             
 
@@ -60,6 +61,7 @@ async def join(websocket, join_key):
         # Start Game after Player 2 Joins
         await startRound(websocket, game, connected)
 
+        # Receive and process moves from Player 2
         await play(websocket, game, PLAYER2, connected)
 
     finally:
@@ -113,35 +115,50 @@ async def play(websocket, game, player, connected):
 
         card = playerData[player]["hand"][column]
 
-        # Check if card has already been played
-        if (card != ""):
-            # Update Game Mode
-            game.play(player, card)
-            
-            # Broadcast a "play" event to update the UI.
-            event = {
-                "type": "play",
-                "player": player,
-                "card": card,
-                "column": column,
-            }
-            broadcast(connected, json.dumps(event))
-            await asyncio.sleep(0.25)
-
-            # Remove card from hand
-            playerData[player]["hand"][column] = ""
-            if(playerData[player]["hand"].count("") == 4):
-                playerData[player]["isHandEmpty"] = True
-            print(playerData[player]["hand"])
-
-            if (game.isMatch):
-                # Update UI when a "Match" Occurs
+        # Check if it is current player's turn
+        if (game.currentPlayer == player):
+            # Check if card has already been played
+            if (card != ""):
+                # Update Game Mode
+                game.play(player, card)
+                
+                # Broadcast a "play" event to update the UI.
                 event = {
-                    "type": "match",
-                    #"player": player,
+                    "type": "play",
+                    "player": player,
+                    "card": card,
+                    "column": column,
                 }
                 broadcast(connected, json.dumps(event))
                 await asyncio.sleep(0.25)
+
+                # Remove card from hand
+                playerData[player]["hand"][column] = ""
+                if(playerData[player]["hand"].count("") == 4):
+                    playerData[player]["isHandEmpty"] = True
+                print(playerData[player]["hand"])
+
+                if (game.isMatch):
+                    # Update UI when a "Match" Occurs
+                    event = {
+                        "type": "match",
+                        #"player": player,
+                    }
+                    broadcast(connected, json.dumps(event))
+                    await asyncio.sleep(0.25)
+
+                # Track Player Turns
+                if(game.currentPlayer == PLAYER1):
+                    game.currentPlayer = PLAYER2
+                else:
+                    game.currentPlayer = PLAYER1
+        else:
+            event = {
+                "type": "error",
+                "message": "Please wait for your turn.",
+            }
+            await websocket.send(json.dumps(event))
+            await asyncio.sleep(0.25)
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
@@ -149,6 +166,7 @@ async def play(websocket, game, player, connected):
             await dealCards(game, connected)
         elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             print("Shuffle and Update Score")
+            print(playerData)
             game.updateScore()
 
             # Update Score UI

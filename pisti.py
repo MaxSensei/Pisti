@@ -26,6 +26,7 @@ class Pisti:
         self.discard = []
         self.isMatch = False
         self.lastMatch = ""
+        self.currentPlayer = PLAYER1
 
     def last_player(self):
         # Last player who placed a card
