@@ -24,7 +24,7 @@ class Pisti:
         self.winnerScore = 0
         self.deck = []
         self.discard = []
-        self.isMatch = False
+        self.isMatch = ""
         self.lastMatch = ""
         self.currentPlayer = PLAYER1
 
@@ -85,29 +85,29 @@ class Pisti:
                     playerData[player]["pistiCount"] += 2
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Double Pisti"
                     self.lastMatch = player
                 elif (len(self.discard) == 2):
                     print("Pisti!")
                     playerData[player]["pistiCount"] += 1
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Pisti"
                     self.lastMatch = player
                 else:
                     print("Match")
                     playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Match"
                     self.lastMatch = player
             elif (self.discard[-1][0] == "J"):
                 print("Jack")
                 playerData[player]["cards"].extend(self.discard)
                 self.discard = []
-                self.isMatch = True
+                self.isMatch = "Jack"
                 self.lastMatch = player
         else:
-            self.isMatch = False
+            self.isMatch = ""
 
     def updateScore(self):
         # Give remaining discard pile to last player to complete a match

@@ -16,6 +16,10 @@ const tableColor = "#35654d";
 const player1Score = document.getElementById("Player1-score");
 const player2Score = document.getElementById("Player2-score");
 const turnTracker = document.getElementById("turns");
+const notification_el = document.getElementById("notification-element");
+
+// Confetti Module
+const jsConfetti = new JSConfetti()
 
 // Inject stylesheet.
 const linkElement = document.createElement("link");
@@ -81,6 +85,10 @@ function playMove(player, card, column) {
     // Remove Card from Player Hand UI
     removeFromHand(player, column);
   }
+  // Clear any Notifications
+  //notification_el.innerText = "";
+  notification_el.style.visibility = "hidden";
+
   // Update Top Card UI
   topCard.innerText = styleCard(topCard, card);
   topCard.style.backgroundColor = "white";
@@ -89,10 +97,20 @@ function playMove(player, card, column) {
   cardLog.innerText += " " + styleCard(cardLog, card) + " -";
 }
 
-function match(){
+function match(status){
+  // Clear Discard Pile UI
   cardLog.innerText = "";
   topCard.innerText = "";
   topCard.style.backgroundColor = tableColor;
+  
+  // Notify players of the Type of Match
+  notification_el.innerText = status;
+  notification_el.style.visibility = "visible";
+
+  // Shoot confetti for Win or Pisti
+  jsConfetti.addConfetti({
+      emojis: ['♣️', '♦️', '♥️', '♠️'],
+    })
 }
 
 function removeFromHand(player, column){

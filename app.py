@@ -142,7 +142,7 @@ async def play(websocket, game, player, connected):
                     # Update UI when a "Match" Occurs
                     event = {
                         "type": "match",
-                        #"player": player,
+                        "status": game.isMatch,
                     }
                     broadcast(connected, json.dumps(event))
                     await asyncio.sleep(0.25)
