@@ -8,7 +8,11 @@ window.addEventListener("DOMContentLoaded", () => {
     createDiscard(discardPile);
     createHand(playerHand);
     // Open the WebSocket connection and register event handlers.
-    const websocket = new WebSocket("ws://localhost:8001/");
+    //const websocket = new WebSocket("ws://localhost:8001/");
+    // Get address of server and establish WebSocket on Port 8001
+    let address = window.location.host;
+    address = address.replace(/0$/, '1');
+    const websocket = new WebSocket("ws://" + address + "/");
     initGame(websocket);
     receiveMoves(playerHand, websocket);
     sendMoves(playerHand, websocket);
