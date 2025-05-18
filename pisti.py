@@ -8,13 +8,6 @@ PLAYER1, PLAYER2 = "Player1", "Player2"
 playerCount = 2
 handSize = 4
 
-#playerData = {
-#    "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
-#    "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
-#}
-
-
-
 class Pisti:
 
     def __init__(self):
@@ -70,7 +63,6 @@ class Pisti:
             # Reset Flags
             for player in self.playerData:
                 self.playerData[player]["isHandEmpty"] = False
-            #self.playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
             
             for player in self.playerData:
                 print(player + str(self.playerData[player]["hand"]))

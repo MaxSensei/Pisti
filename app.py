@@ -204,6 +204,8 @@ async def handler(websocket):
 
 
 async def main():
+    # "0.0.0.0" is accessible on local NETWORK
+    # "127.0.0.1" is accessible ONLY on local HOST (same PC)
     async with serve(handler, "0.0.0.0", 8001) as server:
         await server.serve_forever()
 

@@ -88,7 +88,7 @@ function playMove(player, card, column) {
     removeFromHand(player, column);
   }
   // Clear any Notifications
-  //notification_el.innerText = "";
+  notification_el.innerText = "";
   notification_el.style.visibility = "hidden";
 
   // Update Top Card UI
