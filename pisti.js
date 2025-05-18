@@ -77,6 +77,8 @@ function dealCards(player, card, turn) {
   card3.style.backgroundColor = "white";
 
   turnTracker.innerText = "Turns: " + turn;
+
+
 }
 
 function playMove(player, card, column) {
@@ -104,13 +106,21 @@ function match(status){
   topCard.style.backgroundColor = tableColor;
   
   // Notify players of the Type of Match
-  notification_el.innerText = status;
+  notifyPlayers(status);
+}
+
+// Notify players with onscreen UI
+function notifyPlayers(message){
+  notification_el.innerText = message;
   notification_el.style.visibility = "visible";
 
   // Shoot confetti for Win or Pisti
-  jsConfetti.addConfetti({
+  if(["Pisti", "Double Pisti", "Win"].includes(message)){
+    jsConfetti.addConfetti({
       emojis: ['♣️', '♦️', '♥️', '♠️'],
-    })
+    });
+  }
+  
 }
 
 function removeFromHand(player, column){
@@ -187,4 +197,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer };
+export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, notifyPlayers };
