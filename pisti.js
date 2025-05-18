@@ -1,6 +1,8 @@
 // Global Variables
 const PLAYER1 = "Player1";
 const PLAYER2 = "Player2";
+// Keep track of which browser window belongs to each player
+let PLAYER_UI = "";
 
 const cardLog = document.getElementById("log");
 let topCard = null;
@@ -20,6 +22,10 @@ const linkElement = document.createElement("link");
 linkElement.href = import.meta.url.replace(".js", ".css");
 linkElement.rel = "stylesheet";
 document.head.append(linkElement);
+
+function setPlayer(player){
+  PLAYER_UI = player;
+}
 
 function createDiscard(discardPile){
   // Generate discard pile.
@@ -70,9 +76,8 @@ function dealCards(player, card, turn) {
 }
 
 function playMove(player, card, column) {
-  // Check values of arguments.
-  //if (player == PLAYER1 || player == PLAYER2)
-  if (player == PLAYER1) {
+  // Only update the Hand of Player that played the card
+  if (player == PLAYER_UI) {
     // Remove Card from Player Hand UI
     removeFromHand(player, column);
   }
@@ -164,4 +169,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore };
+export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer };
