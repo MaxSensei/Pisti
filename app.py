@@ -4,7 +4,7 @@ import json
 import secrets
 
 from websockets.asyncio.server import broadcast, serve
-from pisti import PLAYER1, PLAYER2, Pisti, playerData
+from pisti import PLAYER1, PLAYER2, Pisti
 
 JOIN = {}
 
@@ -97,7 +97,7 @@ async def dealCards(game, connected):
         event = {
                 "type": "deal",
                 "player": player,
-                "card": playerData[player]["hand"],
+                "card": game.playerData[player]["hand"],
                 "turn": len(game.deck)/8,
             }
         await connection.send(json.dumps(event))
@@ -113,7 +113,7 @@ async def play(websocket, game, player, connected):
         assert event["type"] == "play"
         column = event["column"]
 
-        card = playerData[player]["hand"][column]
+        card = game.playerData[player]["hand"][column]
 
         # Check if it is current player's turn
         if (game.currentPlayer == player):
@@ -133,10 +133,10 @@ async def play(websocket, game, player, connected):
                 await asyncio.sleep(0.25)
 
                 # Remove card from hand
-                playerData[player]["hand"][column] = ""
-                if(playerData[player]["hand"].count("") == 4):
-                    playerData[player]["isHandEmpty"] = True
-                print(playerData[player]["hand"])
+                game.playerData[player]["hand"][column] = ""
+                if(game.playerData[player]["hand"].count("") == 4):
+                    game.playerData[player]["isHandEmpty"] = True
+                print(game.playerData[player]["hand"])
 
                 if (game.isMatch):
                     # Update UI when a "Match" Occurs
@@ -162,17 +162,16 @@ async def play(websocket, game, player, connected):
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
-        if (len(game.deck) > 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
+        if (len(game.deck) > 0 and game.playerData["Player1"]["isHandEmpty"] and game.playerData["Player2"]["isHandEmpty"]):
             await dealCards(game, connected)
-        elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
+        elif (len(game.deck) == 0 and game.playerData["Player1"]["isHandEmpty"] and game.playerData["Player2"]["isHandEmpty"]):
             print("Shuffle and Update Score")
             game.updateScore()
-            print(playerData)
 
             # Update Score UI
             event = {
                     "type": "score",
-                    "scores": [playerData[PLAYER1]["score"], playerData[PLAYER2]["score"]],
+                    "scores": [game.playerData[PLAYER1]["score"], game.playerData[PLAYER2]["score"]],
                 }
             broadcast(connected, json.dumps(event))
             await asyncio.sleep(0.25)
