@@ -16,6 +16,10 @@ const tableColor = "#35654d";
 const player1Score = document.getElementById("Player1-score");
 const player2Score = document.getElementById("Player2-score");
 const turnTracker = document.getElementById("turns");
+const notification_el = document.getElementById("notification-element");
+
+// Confetti Module
+const jsConfetti = new JSConfetti()
 
 // Inject stylesheet.
 const linkElement = document.createElement("link");
@@ -73,6 +77,8 @@ function dealCards(player, card, turn) {
   card3.style.backgroundColor = "white";
 
   turnTracker.innerText = "Turns: " + turn;
+
+
 }
 
 function playMove(player, card, column) {
@@ -81,6 +87,10 @@ function playMove(player, card, column) {
     // Remove Card from Player Hand UI
     removeFromHand(player, column);
   }
+  // Clear any Notifications
+  //notification_el.innerText = "";
+  notification_el.style.visibility = "hidden";
+
   // Update Top Card UI
   topCard.innerText = styleCard(topCard, card);
   topCard.style.backgroundColor = "white";
@@ -89,10 +99,28 @@ function playMove(player, card, column) {
   cardLog.innerText += " " + styleCard(cardLog, card) + " -";
 }
 
-function match(){
+function match(status){
+  // Clear Discard Pile UI
   cardLog.innerText = "";
   topCard.innerText = "";
   topCard.style.backgroundColor = tableColor;
+  
+  // Notify players of the Type of Match
+  notifyPlayers(status);
+}
+
+// Notify players with onscreen UI
+function notifyPlayers(message){
+  notification_el.innerText = message;
+  notification_el.style.visibility = "visible";
+
+  // Shoot confetti for Win or Pisti
+  if(["Pisti", "Double Pisti", "Win"].includes(message)){
+    jsConfetti.addConfetti({
+      emojis: ['♣️', '♦️', '♥️', '♠️'],
+    });
+  }
+  
 }
 
 function removeFromHand(player, column){
@@ -169,4 +197,4 @@ function styleCard(cardElement, cardValue){
   
 }
 
-export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer };
+export { PLAYER1, PLAYER2, createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, notifyPlayers };

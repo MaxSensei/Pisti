@@ -8,10 +8,10 @@ PLAYER1, PLAYER2 = "Player1", "Player2"
 playerCount = 2
 handSize = 4
 
-playerData = {
-    "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
-    "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
-}
+#playerData = {
+#    "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
+#    "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
+#}
 
 
 
@@ -24,9 +24,13 @@ class Pisti:
         self.winnerScore = 0
         self.deck = []
         self.discard = []
-        self.isMatch = False
+        self.isMatch = ""
         self.lastMatch = ""
         self.currentPlayer = PLAYER1
+        self.playerData = {
+            "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
+            "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
+        }
 
     def last_player(self):
         # Last player who placed a card
@@ -55,21 +59,21 @@ class Pisti:
     def dealCards(self):
         if (len(self.deck) >= playerCount * handSize):
             # Reset Hands
-            for player in playerData:
-                playerData[player]["hand"] = []
+            for player in self.playerData:
+                self.playerData[player]["hand"] = []
 
             # Fill Hand with New Cards from Deck
             for i in range(handSize):
-                for player in playerData:
-                    playerData[player]["hand"].append(self.deck.pop(0))
+                for player in self.playerData:
+                    self.playerData[player]["hand"].append(self.deck.pop(0))
 
             # Reset Flags
-            for player in playerData:
-                playerData[player]["isHandEmpty"] = False
-            #playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
+            for player in self.playerData:
+                self.playerData[player]["isHandEmpty"] = False
+            #self.playerData["Player2"]["isHandEmpty"] = True # CHANGE FOR TESTING
             
-            for player in playerData:
-                print(player + str(playerData[player]["hand"]))
+            for player in self.playerData:
+                print(player + str(self.playerData[player]["hand"]))
             print("Deck Count: " + str(len(self.deck)))
 
 
@@ -82,67 +86,67 @@ class Pisti:
             if (self.discard[-1][0] == self.discard[-2][0]):
                 if (len(self.discard) == 2 and self.discard[-1][0] == "J"):
                     print("Double Pisti!")
-                    playerData[player]["pistiCount"] += 2
-                    playerData[player]["cards"].extend(self.discard)
+                    self.playerData[player]["pistiCount"] += 2
+                    self.playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Double Pisti"
                     self.lastMatch = player
                 elif (len(self.discard) == 2):
                     print("Pisti!")
-                    playerData[player]["pistiCount"] += 1
-                    playerData[player]["cards"].extend(self.discard)
+                    self.playerData[player]["pistiCount"] += 1
+                    self.playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Pisti"
                     self.lastMatch = player
                 else:
                     print("Match")
-                    playerData[player]["cards"].extend(self.discard)
+                    self.playerData[player]["cards"].extend(self.discard)
                     self.discard = []
-                    self.isMatch = True
+                    self.isMatch = "Match"
                     self.lastMatch = player
             elif (self.discard[-1][0] == "J"):
                 print("Jack")
-                playerData[player]["cards"].extend(self.discard)
+                self.playerData[player]["cards"].extend(self.discard)
                 self.discard = []
-                self.isMatch = True
+                self.isMatch = "Jack"
                 self.lastMatch = player
         else:
-            self.isMatch = False
+            self.isMatch = ""
 
     def updateScore(self):
         # Give remaining discard pile to last player to complete a match
-        playerData[self.lastMatch]["cards"].extend(self.discard)
+        self.playerData[self.lastMatch]["cards"].extend(self.discard)
 
         # 1 Point for each Jack and Ace
-        for player in playerData:
+        for player in self.playerData:
             # 1 Point for each Jack and Ace
-            playerData[player]["score"] += sum(playerData[player]["cards"].count(i) for i in ("JC","JD","JH","JS","AC","AD","AH","AS"))
+            self.playerData[player]["score"] += sum(self.playerData[player]["cards"].count(i) for i in ("JC","JD","JH","JS","AC","AD","AH","AS"))
 
             # 2 Points for 2 of Clubs
-            playerData[player]["score"] += playerData[player]["cards"].count("2C") * 2
+            self.playerData[player]["score"] += self.playerData[player]["cards"].count("2C") * 2
 
             # 3 Points for 10 of Diamonds
-            playerData[player]["score"] += playerData[player]["cards"].count("0D") * 3
+            self.playerData[player]["score"] += self.playerData[player]["cards"].count("0D") * 3
 
             # 3 Points for Player with Majority of Cards (27+). No points if tied
-            if (len(playerData[player]["cards"]) > 26):
-                playerData[player]["score"] += 3
+            if (len(self.playerData[player]["cards"]) > 26):
+                self.playerData[player]["score"] += 3
 
             # 10 Points for each Pisti (20 for a Double Pisti)
-            playerData[player]["score"] += playerData[player]["pistiCount"] * 10
+            self.playerData[player]["score"] += self.playerData[player]["pistiCount"] * 10
             
             # Reset Pisti Count and Cards for Next Round
-            print(player + str(playerData[player]["cards"]))
-            print(player + str(playerData[player]["score"]))
-            playerData[player]["pistiCount"] = 0
-            playerData[player]["cards"] = []
+            print(player + str(self.playerData[player]["cards"]))
+            print(player + str(self.playerData[player]["score"]))
+            self.playerData[player]["pistiCount"] = 0
+            self.playerData[player]["cards"] = []
 
             # Check for Winner
             # Winner has 151 points or more at the end of the round.
             # If multiple players have 151+ than whoever has more wins.
-            if (playerData[player]["score"] >= 51 and playerData[player]["score"] > self.winnerScore):
+            if (self.playerData[player]["score"] >= 51 and self.playerData[player]["score"] > self.winnerScore):
                 self.winner = player
-                self.winnerScore = playerData[player]["score"]
+                self.winnerScore = self.playerData[player]["score"]
 
         
         
