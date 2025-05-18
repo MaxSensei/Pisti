@@ -139,7 +139,7 @@ class Pisti:
             # Check for Winner
             # Winner has 151 points or more at the end of the round.
             # If multiple players have 151+ than whoever has more wins.
-            if (playerData[player]["score"] >= 51 and playerData[player]["score"] > self.winnerScore):
+            if (playerData[player]["score"] >= 20 and playerData[player]["score"] > self.winnerScore):
                 self.winner = player
                 self.winnerScore = playerData[player]["score"]
 

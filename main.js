@@ -87,7 +87,7 @@ function sendMoves(playerHand, websocket) {
           match();
           break;
         case "win":
-          showMessage(`Player ${event.player} wins!`);
+          showMessage(`${event.player} wins!`);
           // No further messages are expected; close the WebSocket connection.
           websocket.close(1000);
           break;

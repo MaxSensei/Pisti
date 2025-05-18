@@ -86,6 +86,10 @@ async def startRound(websocket, game, connected):
     broadcast(connected, json.dumps(event))
     await asyncio.sleep(0.25)
 
+    await dealCards(game, connected)
+
+# Deal cards and update UI
+async def dealCards(game, connected):
     game.dealCards()
 
     # Update UI for Each Players Hand
@@ -100,7 +104,6 @@ async def startRound(websocket, game, connected):
             }
         await connection.send(json.dumps(event))
         await asyncio.sleep(0.25)
-
 
 
 async def play(websocket, game, player, connected):
@@ -147,17 +150,7 @@ async def play(websocket, game, player, connected):
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
         if (len(game.deck) > 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
-            game.dealCards()
-
-            # Update UI for Players Hand
-            event = {
-                    "type": "deal",
-                    "player": PLAYER1,
-                    "card": playerData["Player1"]["hand"],
-                    "turn": len(game.deck)/8,
-                }
-            await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.25)
+            await dealCards(game, connected)
         elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             print("Shuffle and Update Score")
             game.updateScore()
@@ -167,7 +160,7 @@ async def play(websocket, game, player, connected):
                     "type": "score",
                     "scores": [playerData[PLAYER1]["score"], playerData[PLAYER2]["score"]],
                 }
-            await websocket.send(json.dumps(event))
+            broadcast(connected, json.dumps(event))
             await asyncio.sleep(0.25)
 
             # Update Winner UI
@@ -176,7 +169,7 @@ async def play(websocket, game, player, connected):
                     "type": "win",
                     "player": game.winner,
                 }
-                await websocket.send(json.dumps(event))
+                broadcast(connected, json.dumps(event))
                 await asyncio.sleep(0.25)
             else:
                 # Start New Round
