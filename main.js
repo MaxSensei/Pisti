@@ -1,4 +1,4 @@
-import { createHand, createDiscard, playMove, dealCards, match, updateScore, PLAYER2, PLAYER1 } from "./pisti.js";
+import { createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, PLAYER2, PLAYER1} from "./pisti.js";
 
 window.addEventListener("DOMContentLoaded", () => {
     // Initialize the UI.
@@ -22,10 +22,12 @@ function initGame(websocket) {
     if (params.has("join")) {
       // Second player joins an existing game.
       event.join = params.get("join");
-      console.log("Player 2")
+      console.log(PLAYER2);
+      setPlayer(PLAYER2);
     } else {
       // First player starts a new game.
-      console.log("player 1")
+      console.log(PLAYER1);
+      setPlayer(PLAYER1);
     }
     websocket.send(JSON.stringify(event));
   });

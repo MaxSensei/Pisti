@@ -20,7 +20,7 @@ async def error(websocket, message):
 async def start(websocket):
     # Initialize the game
     game = Pisti()
-    connected = {websocket}
+    connected = [websocket]
 
     # Generate Player 2 Access Token
     join_key = secrets.token_urlsafe(12)
@@ -39,6 +39,7 @@ async def start(websocket):
         print("first player started game", id(game))
         async for message in websocket:
             print("first player sent", message)
+            await play(websocket, game, PLAYER1, connected)
             
 
     finally:
@@ -54,7 +55,7 @@ async def join(websocket, join_key):
         return
 
     # Add websocket connection to receive moves
-    connected.add(websocket)
+    connected.append(websocket)
 
     # Play moves received from Player 2
     try:
@@ -63,9 +64,11 @@ async def join(websocket, join_key):
         await startRound(websocket, game, connected)
         async for message in websocket:
             print("second player sent", message)
+            await play(websocket, game, PLAYER2, connected)
 
     finally:
-        connected.remove(websocket)
+        print("Player 2 Left the Game")
+        #connected.remove(websocket)
 
 async def startRound(websocket, game, connected):
     # Shuffle Deck
@@ -83,21 +86,24 @@ async def startRound(websocket, game, connected):
     broadcast(connected, json.dumps(event))
     await asyncio.sleep(0.25)
 
+    game.dealCards()
+
+    # Update UI for Each Players Hand
+    for i, connection in enumerate(connected):
+        # print(i, connection) # 0, P1websocket; 1, P2websocket
+        player = PLAYER1 if i == 0 else PLAYER2
+        event = {
+                "type": "deal",
+                "player": player,
+                "card": playerData[player]["hand"],
+                "turn": len(game.deck)/8,
+            }
+        await connection.send(json.dumps(event))
+        await asyncio.sleep(0.25)
+
 
 
 async def play(websocket, game, player, connected):
-    game.dealCards()
-
-    # Update UI for Players Hand
-    event = {
-            "type": "deal",
-            "player": PLAYER1,
-            "card": playerData["Player1"]["hand"],
-            "turn": len(game.deck)/8,
-        }
-    await websocket.send(json.dumps(event))
-    await asyncio.sleep(0.25)
-    
     # Send Move
     async for message in websocket:
         # Parse a "play" event from the UI.
@@ -106,72 +112,36 @@ async def play(websocket, game, player, connected):
         assert event["type"] == "play"
         column = event["column"]
 
-        card = playerData["Player1"]["hand"][column]
+        card = playerData[player]["hand"][column]
 
         # Check if card has already been played
         if (card != ""):
             # Update Game Mode
-            game.play(PLAYER1, card)
+            game.play(player, card)
             
-            # Send a "play" event to update the UI.
+            # Broadcast a "play" event to update the UI.
             event = {
                 "type": "play",
-                "player": PLAYER1,
+                "player": player,
                 "card": card,
                 "column": column,
             }
-            await websocket.send(json.dumps(event))
+            broadcast(connected, json.dumps(event))
             await asyncio.sleep(0.25)
 
             # Remove card from hand
-            playerData["Player1"]["hand"][column] = ""
-            if(playerData["Player1"]["hand"].count("") == 4):
-                playerData["Player1"]["isHandEmpty"] = True
-            print(playerData["Player1"]["hand"])
+            playerData[player]["hand"][column] = ""
+            if(playerData[player]["hand"].count("") == 4):
+                playerData[player]["isHandEmpty"] = True
+            print(playerData[player]["hand"])
 
             if (game.isMatch):
                 # Update UI when a "Match" Occurs
                 event = {
                     "type": "match",
-                    "player": PLAYER1,
+                    #"player": player,
                 }
-                await websocket.send(json.dumps(event))
-                await asyncio.sleep(0.25)
-
-            ################################
-            # AUTOMATIC PLAYER 2 FOR TESTING
-            # Update Game Mode
-            game.play(PLAYER2, playerData[PLAYER2]["hand"][tempCard])
-
-            event = {
-                "type": "play",
-                "player": PLAYER2,
-                "card": playerData[PLAYER2]["hand"][tempCard],
-            }
-            await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.25)
-
-            # Remove card from hand
-            playerData[PLAYER2]["hand"][tempCard] = ""
-            if(playerData[PLAYER2]["hand"].count("") == 4):
-                playerData[PLAYER2]["isHandEmpty"] = True
-            print(playerData[PLAYER2]["hand"])
-
-            tempCard += 1
-            if (tempCard >3):
-                tempCard = 0
-
-            ################################
-
-            
-
-            if (game.isMatch):
-                # Update UI when a "Match" Occurs
-                event = {
-                    "type": "match",
-                    "player": PLAYER2,
-                }
-                await websocket.send(json.dumps(event))
+                broadcast(connected, json.dumps(event))
                 await asyncio.sleep(0.25)
             
         
@@ -210,32 +180,7 @@ async def play(websocket, game, player, connected):
                 await asyncio.sleep(0.25)
             else:
                 # Start New Round
-                game.shuffleDeck()
-                game.initDiscard()
-
-                tempCard = 0
-
-                # Update UI for Initial 4 Discard Cards
-                event = {
-                        "type": "initDisc",
-                        "player": "GAME",
-                        "card": game.discard,
-                        "column": NULL,
-                    }
-                await websocket.send(json.dumps(event))
-                await asyncio.sleep(0.25)
-
-                game.dealCards()
-
-                # Update UI for Players Hand
-                event = {
-                        "type": "deal",
-                        "player": PLAYER1,
-                        "card": playerData["Player1"]["hand"],
-                        "turn": len(game.deck)/8,
-                    }
-                await websocket.send(json.dumps(event))
-                await asyncio.sleep(0.25)
+                await startRound(websocket, game, connected)
 
 # Handles connection according to player
 async def handler(websocket):
