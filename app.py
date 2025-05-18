@@ -166,8 +166,8 @@ async def play(websocket, game, player, connected):
             await dealCards(game, connected)
         elif (len(game.deck) == 0 and playerData["Player1"]["isHandEmpty"] and playerData["Player2"]["isHandEmpty"]):
             print("Shuffle and Update Score")
-            print(playerData)
             game.updateScore()
+            print(playerData)
 
             # Update Score UI
             event = {

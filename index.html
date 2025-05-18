@@ -3,6 +3,7 @@
   <head>
     <title>Pisti</title>
     <link rel="stylesheet" href="pisti.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
   </head>
   <body>
     <div class="score-board">
@@ -10,15 +11,18 @@
       <h3 id="Player2-score">Player 2: 0</h3>
     </div>
     <div class="turn-tracker">
-      <h3 id="turns">Turns: 6</h3>
+      <h3 id="turns">Turns: 5</h3>
     </div>
     <div class="actions">
       <a class="action join" href="">Join</a>
     </div>
-    <div class="player-hand2"></div>
+    <div class="notifications">
+      <h1 id="notification-element">New Turn</h1>
+    </div>
     <div class="discard-pile"></div>
     <p id="log"></p>
     <div class="player-hand"></div>
+    <button id="confetti">Confetti</button>
     <script src="main.js" type="module"></script>
   </body>
 </html>

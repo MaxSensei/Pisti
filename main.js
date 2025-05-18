@@ -1,5 +1,7 @@
 import { createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, PLAYER2, PLAYER1} from "./pisti.js";
 
+const jsConfetti = new JSConfetti()
+
 window.addEventListener("DOMContentLoaded", () => {
     // Initialize the UI.
     const discardPile = document.querySelector(".discard-pile");
@@ -16,6 +18,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initGame(websocket);
     receiveMoves(playerHand, websocket);
     sendMoves(playerHand, websocket);
+    confetti();
   });
 
 function initGame(websocket) {
@@ -35,6 +38,15 @@ function initGame(websocket) {
     }
     websocket.send(JSON.stringify(event));
   });
+}
+
+function confetti(){
+  const confettiButton = document.getElementById("confetti");
+  confettiButton.addEventListener("click", () => {
+    jsConfetti.addConfetti({
+      emojis: ['♣️', '♦️', '♥️', '♠️'],
+    })
+  })
 }
 
 function sendMoves(playerHand, websocket) {
