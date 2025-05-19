@@ -86,7 +86,7 @@ function sendMoves(playerHand, websocket) {
         case "score":
           // Update UI after Match
           updateScore(event.scores);
-          notifyPlayers("New Round");
+          notifyPlayers("Next Round");
           break;
         case "match":
           // Update UI after Match

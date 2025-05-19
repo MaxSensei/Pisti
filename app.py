@@ -174,7 +174,7 @@ async def play(websocket, game, player, connected):
                     "scores": [game.playerData[PLAYER1]["score"], game.playerData[PLAYER2]["score"]],
                 }
             broadcast(connected, json.dumps(event))
-            await asyncio.sleep(0.25)
+            await asyncio.sleep(1.5)
 
             # Update Winner UI
             if (game.winner):

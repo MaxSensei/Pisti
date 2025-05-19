@@ -29,6 +29,13 @@ document.head.append(linkElement);
 
 function setPlayer(player){
   PLAYER_UI = player;
+
+  // Highlight Player Name on Scoreboard
+  if (PLAYER_UI === PLAYER1){
+    player1Score.style.color = "red";
+  } else {
+    player2Score.style.color = "red";
+  }
 }
 
 function createDiscard(discardPile){
