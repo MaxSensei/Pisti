@@ -147,7 +147,6 @@ function removeFromHand(player, column){
 
 function updateScore(scores){
   // Update Score
-  console.log(scores)
   player1Score.innerText = "Player 1: " + scores[0];
   player2Score.innerText = "Player 2: " + scores[1];
   // Reset Discard Pile and Log
