@@ -29,6 +29,7 @@ function initGame(websocket) {
       event.join = params.get("join");
       console.log(PLAYER2);
       setPlayer(PLAYER2);
+      document.getElementById("game-id-div").style.visibility = "hidden";
     } else {
       // First player starts a new game.
       console.log(PLAYER1);
@@ -65,7 +66,8 @@ function sendMoves(playerHand, websocket) {
       switch (event.type) {
         case "init":
           // Create link for inviting the second player.
-          document.querySelector(".join").href = "?join=" + event.join;
+          //document.querySelector(".join").href = "?join=" + event.join;
+          document.getElementById("game-id").innerText = "Game ID: " + event.join;
           break;
         case "play":
           // Update the UI with the move.

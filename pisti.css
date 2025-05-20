@@ -65,7 +65,7 @@ body {
   top: 1%;
   left: 1%;
   background-color: rgba(255, 255, 255, .25);
-  border-radius: 10%;
+  border-radius: 10px;
   width: 160px;
   height: 100px;
   text-align: center;
@@ -77,8 +77,20 @@ body {
   top: 1%;
   right: 1%;
   background-color: rgba(255, 255, 255, .25);
-  border-radius: 10%;
+  border-radius: 10px;
   width: 120px;
+  height: 60px;
+  text-align: center;
+}
+
+/* Turns Remaining */
+.game-id-div {
+  position: absolute;
+  bottom: 1%;
+  left: 1%;
+  background-color: rgba(255, 255, 255, .25);
+  border-radius: 10px;
+  width: 200px;
   height: 60px;
   text-align: center;
 }

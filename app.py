@@ -23,7 +23,7 @@ async def start(websocket):
     connected = [websocket]
 
     # Generate Player 2 Access Token
-    join_key = secrets.token_urlsafe(12)
+    join_key = secrets.token_urlsafe(4)
     JOIN[join_key] = game, connected
 
     try:
