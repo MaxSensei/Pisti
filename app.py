@@ -153,12 +153,7 @@ async def play(websocket, game, player, connected):
                 else:
                     game.currentPlayer = PLAYER1
         else:
-            event = {
-                "type": "error",
-                "message": "Please wait for your turn.",
-            }
-            await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.25)
+            await error(websocket, "Please wait for your turn.")
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
