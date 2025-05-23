@@ -1,6 +1,6 @@
 # How to Play Pisti
 
-##Game Overview
+## Game Overview
 - Players: 2 or 4
 - Deck: Standard 52-card deck
 - Goal: Score points by capturing cards from the center pile, especially by making Pişti (a special single-card capture).
