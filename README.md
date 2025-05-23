@@ -7,12 +7,12 @@
 - Origin: Pişti (pronounced "pishti"), sometimes known as Pişpirik, is a popular Turkish card game.
 
 ## Setup
-1. Cutting the Deck:
-- One player shuffles the deck, while the another cuts it. Then the first player deals the cards.
-2. Dealing:
-- 4 cards are stacked face-up in the center.
-- Each player receives 4 cards.
-- The rest of the deck is placed as the draw pile.
+- Cutting the Deck:
+  - One player shuffles the deck, while the another cuts it. Then the first player deals the cards.
+- Dealing:
+  - 4 cards are stacked face-up in the center.
+  - Each player receives 4 cards.
+  - The rest of the deck is placed as the draw pile.
 
 ## Gameplay
 - The player to the dealer's right plays first; play continues counterclockwise.
@@ -33,17 +33,17 @@
 - If both the lone card and the capturing card are jacks → 20 points (Double Pişti).
 
 ## Scoring
-Item	Points
-Each jack	1
-Each ace	1
-2 of clubs	2
-10 of diamonds	3
-Most cards captured	3
-Each Pişti	10
-Each Double Pişti (jack)	20
+- Each jack:	1
+- Each ace:	1
+- 2 of clubs:	2
+- 10 of diamonds:	3
+- Most cards captured:	3
+- Each Pişti:	10
+- Each Double Pişti (jack):	20
 
-- Max base points per hand: 16 (plus any Pişti bonuses)
-- If teams tie in card count (26 each), the 3-point bonus is not awarded.
+Max base points per hand: 16 (plus any Pişti bonuses)
+
+If teams tie in card count (26 each), the 3-point bonus is not awarded.
 
 ## Winning
 - First player to 151 points wins.
