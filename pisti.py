@@ -5,9 +5,6 @@ __all__ = ["PLAYER1", "PLAYER2", "Pisti"]
 
 PLAYER1, PLAYER2 = "Player1", "Player2"
 
-playerCount = 2
-handSize = 4
-
 class Pisti:
 
     def __init__(self):
@@ -21,6 +18,8 @@ class Pisti:
         self.isMatch = ""
         self.lastMatch = ""
         self.currentPlayer = PLAYER1
+        self.playerCount = 2
+        self.handSize = 4
         self.isMatchFull = False # True when 2 players have joined
         self.playerData = {
             "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
@@ -48,17 +47,17 @@ class Pisti:
 
     def initDiscard(self):
         # Starts the game by placing 4 cards on top of the discard
-        for i in range(handSize):
+        for i in range(self.handSize):
             self.discard.append(self.deck.pop(0))
 
     def dealCards(self):
-        if (len(self.deck) >= playerCount * handSize):
+        if (len(self.deck) >= self.playerCount * self.handSize):
             # Reset Hands
             for player in self.playerData:
                 self.playerData[player]["hand"] = []
 
             # Fill Hand with New Cards from Deck
-            for i in range(handSize):
+            for i in range(self.handSize):
                 for player in self.playerData:
                     self.playerData[player]["hand"].append(self.deck.pop(0))
 

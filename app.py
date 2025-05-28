@@ -54,7 +54,7 @@ async def join(websocket, join_key):
     
     # Check if 2 Players have already joined the game.
     if(game.isMatchFull):
-        await error(websocket, "Sorry. Game is full.")
+        await error(websocket, "Sorry. Game is already full.")
         return
     else:
         game.isMatchFull = True
