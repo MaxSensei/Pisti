@@ -21,6 +21,7 @@ class Pisti:
         self.isMatch = ""
         self.lastMatch = ""
         self.currentPlayer = PLAYER1
+        self.isMatchFull = False # True when 2 players have joined
         self.playerData = {
             "Player1": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},
             "Player2": {"hand": [], "cards": [], "isHandEmpty": False, "pistiCount": 0, "score": 0},

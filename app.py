@@ -51,6 +51,13 @@ async def join(websocket, join_key):
     except KeyError:
         await error(websocket, "Game not found.")
         return
+    
+    # Check if 2 Players have already joined the game.
+    if(game.isMatchFull):
+        await error(websocket, "Sorry. Game is full.")
+        return
+    else:
+        game.isMatchFull = True
 
     # Add websocket connection to receive moves
     connected.append(websocket)
