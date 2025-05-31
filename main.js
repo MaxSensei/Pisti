@@ -2,7 +2,7 @@ import { createHand, createDiscard, playMove, dealCards, match, updateScore, set
 
 function getWebSocketServer() {
   if (window.location.host === "python-websockets.github.io") {
-    return "wss://websockets-tutorial.koyeb.app/";
+    return $ADDRESS;
   } else if (window.location.host === "localhost:8000") {
     return "ws://localhost:8001/";
   } else {
