@@ -75,10 +75,15 @@ http://192.168.X.X/8000/
 
 If you do not know the IP address of the server, run "ipconfig" on the command line of the computer hosting the server.
    
-5. Share the Game ID for Player 2.
+5. Share the link for Player 2.
 
-The first user to access the website is Player 1. Upon loading the page, a Game ID will be generated. Share this ID with Player 2 using an outside messaging service (email, SMS, etc.). When the "Join" button is clicked, Player 2 will be prompted to enter the Game ID. 
+The first user to access the website is Player 1. Upon loading the page, a link for Player 2 is created. Share this link with Player 2 using an outside messaging service (email, SMS, etc.). 
 
 6. Play the game
 
-When Player 2 enters the Game ID, the connection will be created and the game should begin. Have fun!
+When Player 2 opens the link, the connection will be created and the game should begin. Have fun!
+
+
+# Play Online
+
+The game can be played online at https://maxsensei.github.io/Pisti/
