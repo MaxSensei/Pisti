@@ -3,8 +3,7 @@ import { createHand, createDiscard, playMove, dealCards, match, updateScore, set
 function getWebSocketServer() {
   console.log(window.location.host);
   if (window.location.host === "maxsensei.github.io") {
-    console.log("TEST");
-    return $ADDRESS;
+    return "wss://musical-ronnie-maxsensei-bee65bc7.koyeb.app/";
   } else if (window.location.host === "localhost:8000") {
     return "ws://localhost:8001/";
   } else {
