@@ -1,5 +1,4 @@
 import asyncio
-from asyncio.windows_events import NULL
 import json
 import secrets
 
@@ -86,7 +85,7 @@ async def startRound(websocket, game, connected):
             "type": "initDisc",
             "player": "GAME",
             "card": game.discard,
-            "column": NULL,
+            "column": None,
         }
     broadcast(connected, json.dumps(event))
     await asyncio.sleep(0.25)

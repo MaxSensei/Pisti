@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import random
 
 __all__ = ["PLAYER1", "PLAYER2", "Pisti"]
