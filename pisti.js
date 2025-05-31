@@ -5,6 +5,7 @@ const PLAYER2 = "Player2";
 let PLAYER_UI = "";
 
 const cardLog = document.getElementById("log");
+let cardLogColor = "";
 let topCard = null;
 let card0 = null;
 let card1 = null;
@@ -103,7 +104,8 @@ function playMove(player, card, column) {
   topCard.style.backgroundColor = "white";
 
   // Update Log
-  cardLog.innerText += " " + styleCard(cardLog, card) + " -";
+  //cardLog.innerText += " " + styleCard(cardLog, card) + " -";
+  cardLog.innerHTML += "<span style='color: " + cardLogColor + "'> " + styleCard(cardLog, card) + "</span><span style='color: white'> -</span>";
 }
 
 function match(status){
@@ -125,6 +127,7 @@ function notifyPlayers(message){
   if(["Pisti", "Double Pisti", "Win"].includes(message)){
     jsConfetti.addConfetti({
       emojis: ['♣️', '♦️', '♥️', '♠️'],
+      emojiSize: 100,
     });
   }
   
@@ -176,24 +179,28 @@ function styleCard(cardElement, cardValue){
     case "C":
       if(cardElement !== cardLog){
         cardElement.style.color = "black";
+        cardLogColor = "black";
       }
       stylizedValue += "♣"
       return stylizedValue;
     case "D":
       if(cardElement !== cardLog){
         cardElement.style.color = "red";
+        cardLogColor = "red";
       }
       stylizedValue += "♦"
       return stylizedValue;
     case "H":
       if(cardElement !== cardLog){
         cardElement.style.color = "red";
+        cardLogColor = "red";
       }
       stylizedValue += "♥"
       return stylizedValue;
     case "S":
       if(cardElement !== cardLog){
         cardElement.style.color = "black";
+        cardLogColor = "black";
       }
       stylizedValue += "♠"
       return stylizedValue;
