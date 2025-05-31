@@ -112,6 +112,11 @@ class Pisti:
         self.playerData[self.lastMatch]["cards"].extend(self.discard)
         # Clear discard pile for next round
         self.discard = []
+        # Player that starts first each round changes
+        if(self.currentPlayer == PLAYER1):
+            self.currentPlayer = PLAYER2
+        else:
+            self.currentPlayer = PLAYER1
 
         # 1 Point for each Jack and Ace
         for player in self.playerData:
