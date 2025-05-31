@@ -12,7 +12,7 @@ class Pisti:
         self.moves = []
         self.winner = ""
         self.winnerScore = 0   # The score of the winning player
-        self.minWinScore = 51 # Minimum score needed to win
+        self.minWinScore = 151 # Minimum score needed to win
         self.deck = []
         self.discard = []
         self.isMatch = ""
