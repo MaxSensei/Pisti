@@ -82,3 +82,8 @@ The first user to access the website is Player 1. Upon loading the page, a link 
 6. Play the game
 
 When Player 2 opens the link, the connection will be created and the game should begin. Have fun!
+
+
+# Play Online
+
+The game can be played online at https://maxsensei.github.io/Pisti/
