@@ -1,6 +1,7 @@
 import { createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, notifyPlayers, PLAYER2, PLAYER1} from "./pisti.js";
 
 function getWebSocketServer() {
+  console.log(window.location.host);
   if (window.location.host === "maxsensei.github.io") {
     console.log("TEST");
     return $ADDRESS;
