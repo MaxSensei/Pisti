@@ -147,3 +147,53 @@ h2 {
 }
 
 
+/* Mobile Devices */
+@media (max-width: 1000px) {
+  .card {
+    width: 189px;
+    height: 264px;
+    line-height: 260px;
+    font-size: 90px;
+   }
+  /* Score Board */
+  .score-board {
+    width: 425px;
+    height: 200px;
+    font-size: 50px;
+  }
+
+  h3 {
+    margin: 20px 0;
+  }
+
+  /* Turns Remaining */
+  .turn-tracker {
+    width: 300px;
+    height: 110px;
+    font-size: 50px;
+  }
+
+  /* Turns Remaining */
+  .game-id-div {
+    width: 500px;
+    height: 90px;
+    font-size: 40px;
+  }
+
+  h1 {
+    line-height: 325%;
+    font-size: 120px;
+  }
+
+  p {
+    font-size: 40px;
+    width: 800px;
+    text-align: center;
+  }
+
+  /* Score Board */
+  .score-rules {
+    visibility: hidden;
+  }
+  
+}
