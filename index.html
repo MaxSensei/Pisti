@@ -1,65 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Pisti</title>
+    <title>Pişti</title>
     <link rel="stylesheet" href="pisti.css">
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   </head>
   <body>
-    <div class="score-board">
-      <h3 id="Player1-score">Player 1: 0</h3>
-      <h3 id="Player2-score">Player 2: 0</h3>
-    </div>
-    <div class="turn-tracker">
-      <h3 id="turns">Turns: 5</h3>
-    </div>
-    <div class="score-rules">
-      <table><thead>
-  <tr>
-    <th>Scoring Event</th>
-    <th>Points</th>
-  </tr></thead>
-<tbody>
-  <tr>
-    <td>Each Jack Captured</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>Each Ace Captured</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>2 of Clubs</td>
-    <td>2</td>
-  </tr>
-  <tr>
-    <td>10 of Diamonds</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>Most Total Cards</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>Pisti</td>
-    <td>10</td>
-  </tr>
-  <tr>
-    <td>Double Pisti</td>
-    <td>20</td>
-  </tr>
-</tbody>
-</table>
-    </div>
-    <div class="actions">
-      <a class="action join" href="">Join</a>
-    </div>
-    <div class="notifications">
-      <h1 id="notification-element">New Turn</h1>
-    </div>
-    <div class="discard-pile"></div>
-    <p id="log"></p>
-    <div class="player-hand"></div>
-    <script src="main.js" type="module"></script>
+    <h2>
+      <span style='color: black'>P</span>
+      <span style='color: red'>i</span>
+      <span style='color: black'>ş</span>
+      <span style='color: red'>t</span>
+      <span style='color: black'>i</span>
+    </h2>
+    <a href="game.html" class="button">Start</a>
+    <a class="button" onclick="joinGame()">Join</a>
+    <a class="button">Rules</a>
   </body>
+
+  <script>
+    function joinGame() {
+      gameID = prompt("Please enter the Game ID:");
+      // Check if user entered a valid Game ID format
+      if (gameID && gameID.length === 6){
+        window.location.href = 'http://' + window.location.host + '/game.html?join=' + gameID;
+      }
+      
+    }
+  </script>
+
+
 </html>

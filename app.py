@@ -23,7 +23,7 @@ async def start(websocket):
     connected = [websocket]
 
     # Generate Player 2 Access Token
-    join_key = secrets.token_urlsafe(12)
+    join_key = secrets.token_urlsafe(4)
     JOIN[join_key] = game, connected
 
     try:
@@ -51,6 +51,13 @@ async def join(websocket, join_key):
     except KeyError:
         await error(websocket, "Game not found.")
         return
+    
+    # Check if 2 Players have already joined the game.
+    if(game.isMatchFull):
+        await error(websocket, "Sorry. Game is already full.")
+        return
+    else:
+        game.isMatchFull = True
 
     # Add websocket connection to receive moves
     connected.append(websocket)
@@ -153,12 +160,7 @@ async def play(websocket, game, player, connected):
                 else:
                     game.currentPlayer = PLAYER1
         else:
-            event = {
-                "type": "error",
-                "message": "Please wait for your turn.",
-            }
-            await websocket.send(json.dumps(event))
-            await asyncio.sleep(0.25)
+            await error(websocket, "Please wait for your turn.")
             
         
         # Deal Cards When Both Players Hands are Empty and Deck Remains
