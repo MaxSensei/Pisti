@@ -2,6 +2,9 @@ import asyncio
 from asyncio.windows_events import NULL
 import json
 import secrets
+import http
+import os
+import signal
 
 from websockets.asyncio.server import broadcast, serve
 from pisti import PLAYER1, PLAYER2, Pisti
@@ -203,13 +206,19 @@ async def handler(websocket):
         # Player 1 starts a new game.
         await start(websocket)
 
-
+# Check status of remote server
+def health_check(connection, request):
+    if request.path == "/healthz":
+        return connection.respond(http.HTTPStatus.OK, "OK\n")
 
 async def main():
     # "0.0.0.0" is accessible on local NETWORK
     # "127.0.0.1" is accessible ONLY on local HOST (same PC)
-    async with serve(handler, "0.0.0.0", 8001) as server:
-        await server.serve_forever()
+    port = int(os.environ.get("PORT", "8001"))
+    async with serve(handler, "0.0.0.0", port, process_request=health_check) as server:
+        loop = asyncio.get_running_loop()
+        loop.add_signal_handler(signal.SIGTERM, server.close)
+        await server.wait_closed()
 
 
 if __name__ == "__main__":

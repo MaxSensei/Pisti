@@ -1,5 +1,15 @@
 import { createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, notifyPlayers, PLAYER2, PLAYER1} from "./pisti.js";
 
+function getWebSocketServer() {
+  if (window.location.host === "python-websockets.github.io") {
+    return "wss://websockets-tutorial.koyeb.app/";
+  } else if (window.location.host === "localhost:8000") {
+    return "ws://localhost:8001/";
+  } else {
+    throw new Error(`Unsupported host: ${window.location.host}`);
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     // Initialize the UI.
     const discardPile = document.querySelector(".discard-pile");
@@ -9,9 +19,9 @@ window.addEventListener("DOMContentLoaded", () => {
     createHand(playerHand);
     // const websocket = new WebSocket("ws://localhost:8001/");
     // Get address of server and establish WebSocket connection on Port 8001
-    let address = window.location.host;
-    address = address.replace(/0$/, '1');
-    const websocket = new WebSocket("ws://" + address + "/");
+    //let address = window.location.host;
+    //address = address.replace(/0$/, '1');
+    const websocket = new WebSocket(getWebSocketServer());
 
     // Initialize game and register event handlers
     initGame(websocket);
