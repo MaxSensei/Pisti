@@ -29,6 +29,13 @@ document.head.append(linkElement);
 
 function setPlayer(player){
   PLAYER_UI = player;
+
+  // Highlight Player Name on Scoreboard
+  if (PLAYER_UI === PLAYER1){
+    player1Score.style.color = "red";
+  } else {
+    player2Score.style.color = "red";
+  }
 }
 
 function createDiscard(discardPile){
@@ -147,7 +154,6 @@ function removeFromHand(player, column){
 
 function updateScore(scores){
   // Update Score
-  console.log(scores)
   player1Score.innerText = "Player 1: " + scores[0];
   player2Score.innerText = "Player 2: " + scores[1];
   // Reset Discard Pile and Log

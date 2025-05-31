@@ -14,7 +14,8 @@ class Pisti:
         # Game Variables
         self.moves = []
         self.winner = ""
-        self.winnerScore = 0
+        self.winnerScore = 0   # The score of the winning player
+        self.minWinScore = 51 # Minimum score needed to win
         self.deck = []
         self.discard = []
         self.isMatch = ""
@@ -72,6 +73,7 @@ class Pisti:
     def play(self, player, card):
         # Play Card
         self.discard.append(card)
+        print(len(self.discard), self.discard)
 
         # Check for Match or Jack
         if (len(self.discard) >= 2):
@@ -108,6 +110,8 @@ class Pisti:
     def updateScore(self):
         # Give remaining discard pile to last player to complete a match
         self.playerData[self.lastMatch]["cards"].extend(self.discard)
+        # Clear discard pile for next round
+        self.discard = []
 
         # 1 Point for each Jack and Ace
         for player in self.playerData:
@@ -132,11 +136,12 @@ class Pisti:
             print(player + str(self.playerData[player]["score"]))
             self.playerData[player]["pistiCount"] = 0
             self.playerData[player]["cards"] = []
+            self.playerData[player]["hand"] = []
 
             # Check for Winner
             # Winner has 151 points or more at the end of the round.
             # If multiple players have 151+ than whoever has more wins.
-            if (self.playerData[player]["score"] >= 51 and self.playerData[player]["score"] > self.winnerScore):
+            if (self.playerData[player]["score"] >= self.minWinScore and self.playerData[player]["score"] > self.winnerScore):
                 self.winner = player
                 self.winnerScore = self.playerData[player]["score"]
 
