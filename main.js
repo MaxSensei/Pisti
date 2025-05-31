@@ -1,7 +1,7 @@
 import { createHand, createDiscard, playMove, dealCards, match, updateScore, setPlayer, notifyPlayers, PLAYER2, PLAYER1} from "./pisti.js";
 
 function getWebSocketServer() {
-  if (window.location.host === "python-websockets.github.io") {
+  if (window.location.host === "https://maxsensei.github.io/Pisti/") {
     return $ADDRESS;
   } else if (window.location.host === "localhost:8000") {
     return "ws://localhost:8001/";
